@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aufgabenplan</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Zweiwöchentlicher Aufgabenplan</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Woche</th>
+                <th>Person 1</th>
+                <th>Person 2</th>
+                <th>Person 3</th>
+                <th>Person 4</th>
+            </tr>
+        </thead>
+        <tbody id="aufgabenTabelle">
+            <!-- Aufgaben werden hier durch JavaScript eingefügt -->
+        </tbody>
+    </table>
+
+    <script>
+        const festeAufgaben = [
+            ["Küche putzen", "Müll rausbringen", "Boden wischen", "Bad reinigen"],
+            ["Küche putzen", "Müll rausbringen", "Boden wischen", "Bad reinigen"]
+        ];
+
+        const wechselndeAufgaben = [
+            ["Einkaufen", "Fenster putzen", "Pflanzen gießen", "Wäsche waschen"],
+            ["Staub wischen", "Spülmaschine ausräumen", "Müll sortieren", "Gartenpflege"]
+        ];
+
+        function getWeekNumber() {
+            const today = new Date();
+            const oneJan = new Date(today.getFullYear(), 0, 1);
+            const numberOfDays = Math.floor((today - oneJan) / (24 * 60 * 60 * 1000));
+            return Math.ceil((today.getDay() + 1 + numberOfDays) / 7);
+        }
+
+        function renderAufgaben() {
+            const weekNumber = getWeekNumber();
+            const currentWeek = weekNumber % 2; // 0 = Woche 1, 1 = Woche 2
+
+            const aufgabenTabelle = document.getElementById("aufgabenTabelle");
+            aufgabenTabelle.innerHTML = "";
+
+            for (let woche = 0; woche < 2; woche++) {
+                const row = document.createElement("tr");
+                
+                const weekCell = document.createElement("td");
+                weekCell.textContent = "Woche " + (woche + 1);
+                row.appendChild(weekCell);
+
+                for (let person = 0; person < 4; person++) {
+                    const cell = document.createElement("td");
+                    cell.textContent = festeAufgaben[woche][person] + " + " + wechselndeAufgaben[(currentWeek + woche) % 2][person];
+                    row.appendChild(cell);
+                }
+                
+                aufgabenTabelle.appendChild(row);
+            }
+        }
+
+        renderAufgaben();
+    </script>
+</body>
+</html>
